@@ -1,17 +1,14 @@
 package org.progresssoft;
 
-import jakarta.annotation.security.RunAs;
 import org.junit.jupiter.api.Test;
-import org.progresssoft.Model.Deal;
-import org.progresssoft.Repository.DealRepository;
 import org.progresssoft.Service.StoreService;
+import org.progresssoft.Utils.TimeSet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
 class ProgressSoftApplicationTests {
     @Autowired
@@ -19,28 +16,24 @@ class ProgressSoftApplicationTests {
     @Autowired
     private StoreService storeService;
     @Test
-    void testMultiThreading() {
-        int numberOfThreads = 100;
-        CountDownLatch latch = new CountDownLatch(1);
-        Runnable runnable = () -> {
-            try {
-                latch.await(); // All threads will be stuck here until latch is released
-                for (int i = 0; i < 100; i++) {
-                    storeService.addDeals(List.of(Deal.builder()
-                            .id((long) i)
-                            .fromCurrency(Deal.Currency.USD)
-                            .toCurrency(Deal.Currency.EUR)
-                            .amount(100.0)
-                            .build()));
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        };
-        for (int i = 0; i < numberOfThreads; i++) {
-            new Thread(runnable).start();
-        }
-        System.out.println("All threads are ready to start");
-        latch.countDown();
+    void testTimeSet() {
+        TimeSet<Integer> timeSet = new TimeSet<>(1000000);
+        timeSet.add(1);
+        timeSet.add(2);
+        timeSet.add(3);
+        assertTrue(timeSet.contains(1));
+    }
+    @Test
+    void testStoreService() throws InterruptedException {
+        TimeSet<Integer> timeSet = new TimeSet<>(1000);
+        timeSet.add(1);
+        timeSet.add(2);
+        timeSet.add(3);
+        Thread.sleep(200);
+        assertFalse(timeSet.contains(1));
+    }
+    @Test
+    void test3() {
+
     }
 }

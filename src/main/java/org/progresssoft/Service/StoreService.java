@@ -1,54 +1,79 @@
 package org.progresssoft.Service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.progresssoft.Model.Deal;
 import org.progresssoft.Model.Status;
 import org.progresssoft.Repository.DealRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.progresssoft.Utils.ConversionSet;
+import org.progresssoft.Utils.CsvToRowsHelper;
+import org.progresssoft.Utils.RowsToDealsHelper;
+import org.progresssoft.Utils.TimeSet;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.*;
 
 @Service
+@Slf4j
 public class StoreService {
-    @Autowired
-    private Map<Long, Deal> indexMap;
-    @Autowired
-    private DealRepository dealRepository;
-    public Status addDeals(List<Deal> deals) {
-        List<Deal> failedDeals = new ArrayList<>();
-        deals.forEach(deal ->
-                {
-                    if (!indexMap.containsKey(deal.getId())) {
-                        indexMap.put(deal.getId(), deal);
-                        dealRepository.save(deal);
-                    } else{
-                        failedDeals.add(deal);
-                    }
+    private final TimeSet<Deal> dealsCache;
+    private final DealRepository dealRepository;
+    public StoreService(DealRepository dealRepository) {
+        this.dealsCache = new TimeSet<>(600000); // 10 minutes
+        this.dealRepository = dealRepository;
+    }
+    public Status addDeals(MultipartFile file)  {
+        try {
+            CsvToRowsHelper csvToRowsHelper = new CsvToRowsHelper();
+            RowsToDealsHelper rowsToDealsHelper = new RowsToDealsHelper();
+            List<String[]> csvRows = csvToRowsHelper.readCsvFile(file);
+            ConversionSet conversionSet = rowsToDealsHelper.convertRowsToDeals(csvRows);
+            Status status = new Status();
+            if (conversionSet.getSuccessfulDeals().isEmpty()) {
+                log.warn("No deals to add.");
+                status.setStatusType(Status.StatusType.Failed);
+                status.setMessage("No deals to add.");
+                return status;
+            }
+            for (Deal deal : conversionSet.getSuccessfulDeals()) {
+                if (dealsCache.contains(deal)) {
+                    log.warn("Deal with id: " + deal.getId() + " already exists.");
+                    conversionSet.addMessage("Deal with id: " + deal.getId() + " already exists.");
+                } else {
+                    dealRepository.findById(deal.getId()).ifPresentOrElse(
+                            (d) -> {
+                                log.warn("Deal with id:" + deal.getId() + "already exists.");
+                                conversionSet.addMessage("Deal with id: " + deal.getId() + " already exists.");
+                            },
+                            () -> {
+                                this.dealsCache.add(deal);
+                                dealRepository.save(deal);
+                            }
+                    );
                 }
-                );
-        if(failedDeals.isEmpty()){
+            }
+            if(conversionSet.getMessage().isEmpty()) {
+                return Status.builder()
+                        .statusType(Status.StatusType.Success)
+                        .message("All deals added successfully.")
+                        .build();
+            }else{
+                return Status.builder()
+                        .statusType(Status.StatusType.PartialSuccess)
+                        .message(conversionSet.toString())
+                        .build();
+            }
+        }catch (IOException e){
+            log.warn("Error reading file.");
             return Status.builder()
-                    .statusType(Status.StatusType.SUCCESS)
-                    .message("All deals added successfully")
-                    .failedDeals(failedDeals)
+                    .statusType(Status.StatusType.Failed)
+                    .message("Error reading file.")
                     .build();
         }
-        else if(failedDeals.size() == deals.size()){
-            return Status.builder()
-                    .statusType(Status.StatusType.FAILED)
-                    .message("All deals failed to add")
-                    .failedDeals(failedDeals)
-                    .build();
-        }
-        else{
-            return Status.builder()
-                    .statusType(Status.StatusType.PARTIALSUCCESS)
-                    .message("Some deals failed to add")
-                    .failedDeals(failedDeals)
-                    .build();
-        }
+
+
     }
-    public List<Deal> getAllDeals(){
-        return indexMap.values().stream().toList();
-    }
+
 }
