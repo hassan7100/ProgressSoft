@@ -38,12 +38,12 @@ public class RowsToDealsHelper {
             record.setAmount(parseAmount(csvRow[4]));
             return record;
         }catch(ArrayIndexOutOfBoundsException e){
-            log.warn("Error processing Deal: " + Arrays.toString(csvRow) + " reason: not enough fields.");
-            throw new Exception("Error processing Deal: " + Arrays.toString(csvRow) + " reason: not enough fields.");
+            log.warn("Error processing Deal: {} reason: not enough fields.", Arrays.toString(csvRow));
+            throw new Exception("Error processing Deal: " + Arrays.toString(csvRow) + ", reason: not enough fields.");
         }
         catch (Exception e){
-            log.warn("Error processing Deal: " + Arrays.toString(csvRow) + " reason: " + e.getMessage());
-            throw new Exception("Error processing Deal: " + Arrays.toString(csvRow) + " reason: " + e.getMessage());
+            log.warn("Error processing Deal: " + Arrays.toString(csvRow) + ", reason: " + e.getMessage());
+            throw new Exception("Error processing Deal: " + Arrays.toString(csvRow) + ", reason: " + e.getMessage());
         }
     }
     private long parseId(String id) throws IOException {
@@ -55,13 +55,13 @@ public class RowsToDealsHelper {
             throw new IOException("id is empty.");
         }
         catch (NumberFormatException e){
-            throw new IOException("error parsing id.");
+            throw new IOException("error parsing id, please check the format.");
         }
     }
     private Deal.Currency parseCurrency(String currency) throws IOException{
         try{
             if (currency.isEmpty())
-                throw new NullPointerException("error parsing currency.");
+                throw new NullPointerException("error parsing currency, please check the format.");
             return Deal.Currency.valueOf(currency);
         }catch (NullPointerException e){
             throw new IOException("currency is empty.");
@@ -76,14 +76,14 @@ public class RowsToDealsHelper {
             dateFormat.setLenient(false);
             return dateFormat.parse(date);
         } catch (Exception e) {
-            throw new IOException("error parsing date.");
+            throw new IOException("error parsing date, please check the format.");
         }
     }
     private double parseAmount(String amount) throws IOException{
         try{
             return Double.parseDouble(amount);
         }catch (NumberFormatException e){
-            throw new IOException("error parsing amount.");
+            throw new IOException("error parsing amount, please check the format.");
         }
     }
 

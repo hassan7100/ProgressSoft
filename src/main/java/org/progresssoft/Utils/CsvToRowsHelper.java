@@ -19,7 +19,7 @@ public class CsvToRowsHelper {
              CSVReader csvReader = new CSVReader(reader)) {
                 return csvReader.readAll();
         } catch (CsvException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 }
