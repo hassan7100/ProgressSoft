@@ -3,11 +3,8 @@ package org.progresssoft.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.mapping.List;
 import org.progresssoft.Model.Deal;
-
 import java.util.LinkedList;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

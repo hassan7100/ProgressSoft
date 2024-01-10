@@ -32,6 +32,11 @@ public class TimeSet<T> {
                     .anyMatch(e -> Objects.equals(e, element));
         }
     }
+    public int size() {
+        synchronized (set) {
+            return set.size();
+        }
+    }
     private void scheduleCleanupTask() {
         cleanupScheduler.scheduleAtFixedRate(
                 this::cleanupExpiredElements,

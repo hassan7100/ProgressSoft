@@ -26,6 +26,7 @@ public class StoreService {
     }
     public Status addDeals(MultipartFile file)  {
         try {
+            log.info("Adding deals from file: " + file.getOriginalFilename());
             CsvToRowsHelper csvToRowsHelper = new CsvToRowsHelper();
             RowsToDealsHelper rowsToDealsHelper = new RowsToDealsHelper();
             List<String[]> csvRows = csvToRowsHelper.readCsvFile(file);
@@ -44,7 +45,7 @@ public class StoreService {
                 } else {
                     dealRepository.findById(deal.getId()).ifPresentOrElse(
                             (d) -> {
-                                log.warn("Deal with id:" + deal.getId() + "already exists.");
+                                log.warn("Deal with id:" + deal.getId() + " already exists.");
                                 conversionSet.addMessage("Deal with id: " + deal.getId() + " already exists.");
                             },
                             () -> {
@@ -62,7 +63,7 @@ public class StoreService {
             }else{
                 return Status.builder()
                         .statusType(Status.StatusType.PartialSuccess)
-                        .message(conversionSet.toString())
+                        .message(conversionSet.getMessage().toString())
                         .build();
             }
         }catch (IOException e){

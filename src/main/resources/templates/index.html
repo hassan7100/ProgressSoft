@@ -15,6 +15,19 @@
             align-items: center;
             height: 100vh;
         }
+        .file-selected-notification {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
 
         form {
             background-color: #fff;
@@ -56,13 +69,43 @@
         }
     </style>
 </head>
+
 <body>
 
 <form th:action="@{/upload}" method="POST" enctype="multipart/form-data">
     <label for="file">Choose a file</label>
-    <input type="file" name="file" id="file" />
+    <input type="file" name="file" id="file" onchange="handleFileSelection()"/>
     <button type="submit">Upload</button>
 </form>
+
+<script>
+    function handleFileSelection() {
+        var fileInput = document.getElementById('file');
+        var notification = document.getElementById('fileSelectedNotification');
+
+        if (fileInput.files.length > 0) {
+            notification.style.opacity = 1;
+            setTimeout(function () {
+                notification.style.opacity = 0;
+            }, 3000);
+        }
+    }
+</script>
+<div id="fileSelectedNotification" class="file-selected-notification">
+    File selected successfully!
+</div>
+<div th:if="${status != null and status.getStatusType().toString() == 'Success'}" style="color: green;">
+    All deals saved successfully!
+</div>
+
+<div th:if="${status != null and (status.getStatusType().toString() == 'Failed')}" style="color: red;">
+    <p th:text="${status.getMessage()}"></p>
+</div>
+
+<div th:if="${status != null and (status.getStatusType().toString() == 'PartialSuccess')}" style="color: orange;">
+    <span style="white-space: pre-line" th:text="${status.getMessage()}"></span>
+</div>
+
 
 </body>
 </html>
