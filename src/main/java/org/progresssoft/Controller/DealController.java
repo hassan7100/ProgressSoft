@@ -1,9 +1,7 @@
 package org.progresssoft.Controller;
 
 
-import org.progresssoft.Model.Status;
 import org.progresssoft.Service.StoreService;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
