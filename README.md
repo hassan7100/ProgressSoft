@@ -22,10 +22,11 @@ The system processes requests according to the following logic:
 To get started with the ClusteredData Warehouse project, follow these steps:
 1. Clone the Repository:
    ```git clone https://github.com/hassan7100/ProgressSoft/tree/master```
-2. Install Dependencies:
-3.  Install docker from the Docker website: https://www.docker.com/
-4. open cmd on the path of the project and cd to the ReadyEnv: ```cd ReadyEnv```.
-5. type the command: ```docker compose up -d```
+2. Install Dependencies: Install docker from the Docker website: https://www.docker.com/
+4. open cmd on the path of the project then cd to the ReadyEnv: ```cd ReadyEnv```.
+5. type the command: ```docker compose up -d```.
+
+__You can build the jar using the command `mvn install -Dmaven.test.skip=true`__
 #### UserInterface
 The user will see this interface when first entering the website:
 
