@@ -36,17 +36,24 @@ To get started with the ClusteredData Warehouse project, follow these steps:
 __You can build the jar using the command `mvn install -Dmaven.test.skip=true`__
 #### UserInterface
 The user will see this interface when first entering the website:
+<p align="center">
+  <img src="https://github.com/hassan7100/ProgressSoft/assets/83410135/15eb7753-8dae-4247-b2a3-d71ac174a603" alt="Your Image Alt Text" width="100%">
+</p>
 
-![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/15eb7753-8dae-4247-b2a3-d71ac174a603)
+
 
 #### UserInteraction and functionality
 The user is supposed to choose a csv file that includes the deals he wants to upload, when selecting the file, the user will see:
 
-  ![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/fe28b448-53d8-4ffe-9938-4df4ea458d45)
+<p align="center">
+  <img src="https://github.com/hassan7100/ProgressSoft/assets/83410135/fe28b448-53d8-4ffe-9938-4df4ea458d45" alt="Your Image Alt Text" width="50%">
+</p>
 
 After that, he will press the upload file button, and see a brief illustration of the process on the backend, see figure below.
 
-  ![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/700a6d94-4667-4ab5-886a-7588c0781dce)
+<p align="center">
+  <img src="https://github.com/hassan7100/ProgressSoft/assets/83410135/700a6d94-4667-4ab5-886a-7588c0781dce" alt="Your Image Alt Text" width="50%">
+</p>
 
 Deals may have problems, like duplicate Id or wrong format, see figure: 
 
