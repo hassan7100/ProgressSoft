@@ -12,7 +12,7 @@ public class TimeSet<T> {
     private final Set<TimedElement<T>> set;
     private final long expirationTimeMillis;
     private final ScheduledExecutorService cleanupScheduler;
-
+    private final long MAX_SIZE = 1000000;
     public TimeSet(long expirationTimeMillis) {
         this.set = Collections.synchronizedSet(new HashSet<>());
         this.expirationTimeMillis = expirationTimeMillis;
@@ -21,6 +21,9 @@ public class TimeSet<T> {
     }
     public boolean add(T element) {
         long currentMillis = System.currentTimeMillis();
+        if (this.size() >= MAX_SIZE) {
+            return false;
+        }
         synchronized (set) {
             return set.add(new TimedElement<>(element, currentMillis));
         }
