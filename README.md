@@ -17,7 +17,7 @@ The system processes requests according to the following logic:
 * Deal Unique Id
 * From Currency ISO Code (Ordering Currency)
 * To Currency ISO Code
-* Deal Timestamp
+* Deal Timestamp (yyyy-MM-dd HH:mm:ss)
 * Deal Amount in Ordering Currency
 #### Validation:
 * Validates the structure of each row, checking for missing fields, and correct data types.
