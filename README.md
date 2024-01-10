@@ -35,11 +35,11 @@ The user will see this interface when first entering the website:
 #### UserInteraction and functionality
 The user is supposed to choose a csv file that includes the deals he wants to upload, when selecting the file, the user will see:
 
-![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/fe28b448-53d8-4ffe-9938-4df4ea458d45)
+  ![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/fe28b448-53d8-4ffe-9938-4df4ea458d45)
 
 After that, he will press the upload file button, and see a brief illustration of the process on the backend, see figure below.
 
-![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/700a6d94-4667-4ab5-886a-7588c0781dce)
+  ![image](https://github.com/hassan7100/ProgressSoft/assets/83410135/700a6d94-4667-4ab5-886a-7588c0781dce)
 
 Deals may have problems, like duplicate Id or wrong format, see figure: 
 
