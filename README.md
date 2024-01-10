@@ -4,6 +4,13 @@ Welcome to the ClusteredData Warehouse project! This README provides an overview
 
 ## Objective
 The primary objective of this project is to accept FX deal details, validate the input data, and persist the validated data into a database. The system should ensure that the data is accurately recorded and that duplicate requests are not imported.
+## Tech Used
+1. Java: Version 17.
+2. Spring Boot: Version 3.2.1.
+3. Spring Data JPA: For data access.
+4. MySQL Connector: For MySQL database connectivity.
+5. JUnit: Version 5 for testing.
+6. Lombok: helped with code abstraction.
 ## Request Logic
 The system processes requests according to the following logic:
 #### Request Fields:
