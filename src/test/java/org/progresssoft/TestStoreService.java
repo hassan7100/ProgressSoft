@@ -65,5 +65,30 @@ public class TestStoreService {
         Status status = storeService.addDeals(file);
         assertEquals("PartialSuccess", status.getStatusType().toString());
     }
+    @Test
+    void testDuplicateIds(){
+        MultipartFile file = new MockMultipartFile("file", "test.csv", "text/plain",
+                ("ID,fromCurrencyISOCode,toCurrencyISOCode,dealTimestamp,dealAmount\n" +
+                        "1,AED,USD,2001-06-08 05:05:00,200\n" +
+                        "1,AED,USD,2001-06-08 05:05:00,3000\n" + // duplicate
+                        "3,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "4,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "5,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "6,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "7,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "8,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "9,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "9,AED,USD,2001-06-08 05:05:00,100\n" + // duplicate
+                        "11,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "12,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "13,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "14,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "15,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "16,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "17,AED,USD,2001-06-08 05:05:00,100\n" +
+                        "18,AED,USD,2001-06-08 05:05:00,100\n").getBytes());
+        Status status = storeService.addDeals(file);
+        assertEquals("Deal with id: 1 already exists.\nDeal with id: 9 already exists.\n", status.getMessage());
+    }
 
 }
